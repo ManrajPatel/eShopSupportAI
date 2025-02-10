@@ -24,7 +24,7 @@ internal static class OllamaResourceExtensions
         var resource = new OllamaResource(name, models, defaultModel ?? models.First(), enableGpu);
         var ollama = builder.AddResource(resource)
             .WithHttpEndpoint(port: port, targetPort: 11434)
-            .WithImage("ollama/ollama", tag: "0.3.12");
+            .WithImage("ollama/ollama", tag: "0.5.1");
 
         if (enableGpu)
         {
