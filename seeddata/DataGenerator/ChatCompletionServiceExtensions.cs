@@ -32,4 +32,26 @@ public static class ChatCompletionServiceExtensions
         builder.Services.AddChatClient(builder => builder.GetRequiredService<OpenAIClient>().AsChatClient(deployment))
             .UseFunctionInvocation();
     }
+
+    public static void AddOllamaChatCompletion(this HostApplicationBuilder builder, string serviceName)
+    {
+        var configKey = $"{serviceName}:LlmModelName";
+        var modelName = builder.Configuration[configKey];
+
+        if (string.IsNullOrEmpty(modelName))
+        {
+            throw new InvalidOperationException($"No {nameof(modelName)} was specified, and none could be found from configuration at '{configKey}'");
+        }
+
+        var uri = new Uri("http://localhost:11434");
+
+        ChatClientBuilder chatClientBuilder = builder.Services.AddChatClient(serviceProvider => {
+            var httpClient = serviceProvider.GetService<HttpClient>() ?? new();
+            // httpClient.Timeout = TimeSpan.FromMinutes(2);
+            return new OllamaChatClient(uri, modelName, httpClient);
+        });
+
+        // Temporary workaround for Ollama issues
+        chatClientBuilder.UsePreventStreamingWithFunctions();
+    }
 }

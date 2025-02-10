@@ -42,6 +42,10 @@ public class CategoryGenerator(IServiceProvider services) : GeneratorBase<Catego
             var response = await GetAndParseJsonChatCompletion<Response>(prompt, maxTokens: 70 * batchSize);
             foreach (var c in response.Categories)
             {
+                // Though we asked for 25 categories, we might get fewer if we get duplicates hence the outer while loop is not generating exactly 50 categories
+                // so we need to check if we have enough categories
+                if (categoryNames.Count == numCategories) yield break;
+
                 if (categoryNames.Add(c.Name))
                 {
                     c.CategoryId = categoryNames.Count;

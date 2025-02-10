@@ -4,9 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 var builder = Host.CreateApplicationBuilder(args);
+
+// In case of CreateApplicationBuilder, we manually need to load the config files
 builder.Configuration.AddJsonFile("appsettings.json");
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true);
-builder.AddOpenAIChatCompletion("chatcompletion");
+
+// builder.AddOpenAIChatCompletion("chatcompletion");
+builder.AddOllamaChatCompletion("chatcompletion");
 
 var services = builder.Build().Services;
 

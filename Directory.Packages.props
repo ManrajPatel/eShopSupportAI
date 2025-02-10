@@ -27,7 +27,7 @@
     <PackageVersion Include="Microsoft.Extensions.AI.Evaluation" Version="$(MicrosoftExtensionsAiEvaluationVersion)" />
     <PackageVersion Include="Microsoft.Extensions.AI.Evaluation.Quality" Version="$(MicrosoftExtensionsAiEvaluationVersion)" />
     <PackageVersion Include="Microsoft.Extensions.AI.Evaluation.Reporting" Version="$(MicrosoftExtensionsAiEvaluationVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.AI.Ollama" Version="$(MicrosoftExtensionsAiVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.AI.Ollama" Version="9.1.0-preview.1.25064.3" />
     <PackageVersion Include="Microsoft.Extensions.AI.OpenAI" Version="$(MicrosoftExtensionsAiVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="$(AspireVersion)" />
