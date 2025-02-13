@@ -46,7 +46,9 @@ var blobStorage = storage.AddBlobs("eshopsupport-blobs");
 var pythonInference = builder.AddPythonUvicornApp("python-inference",
     Path.Combine("..", "PythonInference"), port: 62394);
 
-var redis = builder.AddRedis("redis");
+var redis = builder.AddRedis("redis")
+    .WithRedisCommander(); // UI to manage redis database
+                           //.WithRedisInsight();
 
 var backend = builder.AddProject<Backend>("backend")
     .WithReference(backendDb)

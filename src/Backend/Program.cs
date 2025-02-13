@@ -15,12 +15,19 @@ builder.AddServiceDefaults();
 
 builder.AddNpgsqlDbContext<AppDbContext>("backenddb");
 
+// Qdrant vector db related service registration in DI container
 builder.AddQdrantHttpClient("vector-db");
 builder.Services.AddScoped(s => new QdrantMemoryStore(
     s.GetQdrantHttpClient("vector-db"), 384));
 
+// register Qdrant vector database as memory store
 builder.Services.AddScoped<IMemoryStore>(s => s.GetRequiredService<QdrantMemoryStore>());
+
+// Local embeddings model by SmartComponents.LocalEmbeddings.SemanticKernel
+// Embeddings are generated using this library. Instead you can use external AI models like (all-MiniLM-L6-v2) or OpenAi's embedding model
+// Here we are adding a service in DI container. Which means you can access this service anywhere in the app by injecting the interface in constructor of the service (class) 
 builder.Services.AddScoped<ITextEmbeddingGenerationService, LocalTextEmbeddingGenerationService>();
+
 builder.Services.AddScoped<ISemanticTextMemory, SemanticTextMemory>();
 builder.Services.AddScoped<ProductSemanticSearch>();
 builder.Services.AddScoped<ProductManualSemanticSearch>();
