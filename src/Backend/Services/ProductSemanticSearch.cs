@@ -9,9 +9,17 @@ public class ProductSemanticSearch(ISemanticTextMemory semanticTextMemory)
 {
     private const string ProductCollectionName = "products";
 
+    /// <summary>
+    /// Finds relevant products from Qdrant vector database using searchText
+    /// Same can be achieved by calling Qdrant db's API (as done in ProductManualSemanticSearch.SearchAsync)
+    /// Here the same thing is done using abstraction ISemanticTextMemory, which internally must be calling Qdrant db api
+    /// </summary>
+    /// <param name="searchText"></param>
+    /// <returns></returns>
     public async Task<IEnumerable<FindProductsResult>> FindProductsAsync(string searchText)
     {
         var results = new List<FindProductsResult>();
+
         await foreach (var result in semanticTextMemory.SearchAsync(ProductCollectionName, searchText, minRelevanceScore: 0.6, limit: 5))
         {
             // It's a bit weird to get the brand from "description" but MemoryQueryResult doesn't have more structured custom metadata
