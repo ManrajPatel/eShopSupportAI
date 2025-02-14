@@ -48,14 +48,20 @@ public static class AssistantApi
         messages.AddRange(request.Messages.Select(m => new ChatMessage(m.IsAssistant ? ChatRole.Assistant : ChatRole.User, m.Text)));
         await httpContext.Response.WriteAsync("[null");
 
-        // Call the LLM backend
+        // A tool to search the details in product manuals using vector based semantic search (Qdrant database)
+        // This line of code will not call the SearchManual function
+        // This is used as a tool in executionSettings below
         var searchManual = AIFunctionFactory.Create(new SearchManualContext(httpContext).SearchManual);
+
         var executionSettings = new ChatOptions
         {
             Temperature = 0,
-            Tools = [searchManual],
+            Tools = [searchManual], // a tool to search the manuals and fetch details for asked query.
             AdditionalProperties = new() { ["seed"] = 0 },
         };
+
+        // Call to AI model to generate content
+        // Tools (SearchManual function) will be called at this stage to fetch details from manuals and fetched manual details will be used by the AI model to construct the response (completition) 
         var streamingAnswer = chatClient.CompleteStreamingAsync(messages, executionSettings, cancellationToken);
 
         // Stream the response to the UI

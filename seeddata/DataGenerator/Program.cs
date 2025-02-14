@@ -9,7 +9,7 @@ var builder = Host.CreateApplicationBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json");
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true);
 
-// builder.AddOpenAIChatCompletion("chatcompletion");
+//builder.AddOpenAIChatCompletion("chatcompletion");
 builder.AddOllamaChatCompletion("chatcompletion");
 
 var services = builder.Build().Services;
